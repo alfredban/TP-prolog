@@ -90,5 +90,34 @@ encuesta(10,radio,si,informacion,1500).
 encuesta(10,destornillador,si,util,5500).
 
                 %consultas
+                %cuantas veces un producto fue aceptado    
+cuenta_cantidad_de_aceptacion(Producto, Cantidad):-
+    findall(Producto, encuesta(_,Producto,si,_,_), Lista),
+     length(Lista,Cantidad).
 
-                %TODO
+                %trae todos los productos
+todos_los_productos(Productos):-
+    findall(P,producto(P), Productos).
+
+                %retorna la aceptacion de cada producto
+cantidades_de_aceptacion([],[]). %si no hay nada en la lista termina aca
+cantidades_de_aceptacion([P|Ps], [(P,Cant)|Resto]):-  %p es el producto, ps la lista de productos p y cant es la lista con sus resultados, resto es la lista ya hecha
+    cuenta_cantidad_de_aceptacion(P,Cant), %devuelve el valor_del primer valor
+    cantidades_de_aceptacion(Ps,Resto).   %llama de froma recursiva
+
+                %devuelve el producto con mas aceptacion
+max_aceptacion([(P, C)], P, C).                           
+max_aceptacion([(P1, C1)|Resto], MaxP, MaxC) :-
+    max_aceptacion(Resto, P2, C2),
+    (C1 >= C2 -> MaxP = P1, MaxC = C1 ; MaxP = P2, MaxC = C2).      
+
+                %producto mas aceptado
+producto_mas_aceptado_funcion(Producto):-
+todos_los_productos(ListaProductos),
+    cantidades_de_aceptacion(ListaProductos, Pares),
+    max_aceptacion(Pares,Producto,_).   
+
+                %imprimir producto mas aceptado
+producto_mas_aceptado:-
+     producto_mas_aceptado(P),
+     write("el producto mas aceptado es: "), write(P), nl.            
