@@ -109,7 +109,7 @@ cantidades_de_aceptacion([P|Ps], [(P,Cant)|Resto]):-  %p es el producto, ps la l
 max_aceptacion([(P, C)], P, C).                           
 max_aceptacion([(P1, C1)|Resto], MaxP, MaxC) :-
     max_aceptacion(Resto, P2, C2),
-    (C1 >= C2 -> MaxP = P1, MaxC = C1 ; MaxP = P2, MaxC = C2).      
+    (C1 >= C2 -> MaxP = P1, MaxC = C1 ; MaxP = P2, MaxC = C2).   
 
                 %producto mas aceptado
 producto_mas_aceptado_funcion(Producto):-
@@ -117,7 +117,38 @@ todos_los_productos(ListaProductos),
     cantidades_de_aceptacion(ListaProductos, Pares),
     max_aceptacion(Pares,Producto,_).   
 
-                %imprimir producto mas aceptado
+                %imprimir producto mas aceptado         IMPORTANTE
 producto_mas_aceptado:-
      producto_mas_aceptado(P),
-     write("el producto mas aceptado es: "), write(P), nl.            
+     write("el producto mas aceptado es: "), write(P), nl.   
+
+                %devuelve el producto con menos aceptacion
+min_aceptacion([(P, C)], P, C).                
+min_aceptacion([(P1,C1) | Resto], MinP, MinC):-
+    min_aceptacion(Resto, P2, C2),
+    (C1 =< C2 -> MinP = P1, MinC = C1 ; MinP = P2, MinC = C2).
+
+
+
+                %producto menos aceptado
+producto_menos_aceptado_funcion(Producto):-
+    todos_los_productos(ListaProductos),
+    cantidades_de_aceptacion(ListaProductos,Pares), 
+    min_aceptacion(Pares,Producto,_).
+
+                   %imprimir producto menos aceptado         IMPORTANTE
+producto_menos_aceptado:-
+     producto_menos_aceptado_funcion(P),
+     write("el producto menos aceptado es: "), write(P), nl.      
+
+
+                %cantidad de encuestados
+cantidad_personas_encuestadas(Cant):-
+    findall(ID, encuesta(ID, _, _, _, _), Lista), 
+    sort(Lista, SinRepetidos), 
+    length(SinRepetidos, Cant).
+
+                    %mostrar cantidad de encuestados        IMPORTANTE
+personas_encuestadas:-
+    cantidad_personas_encuestadas(Cant),
+    write("cantidad de personas encuestadas:"), write(Cant),nl.
