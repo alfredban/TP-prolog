@@ -105,7 +105,7 @@ cantidades_de_aceptacion([P|Ps], [(P,Cant)|Resto]):-  %p es el producto, ps la l
     cuenta_cantidad_de_aceptacion(P,Cant), %devuelve el valor_del primer valor
     cantidades_de_aceptacion(Ps,Resto).   %llama de froma recursiva
 
-                %devuelve el producto con mas aceptacion
+                %devuelve y compara el producto mas aceptado
 max_aceptacion([(P, C)], P, C).                           
 max_aceptacion([(P1, C1)|Resto], MaxP, MaxC) :-
     max_aceptacion(Resto, P2, C2),
@@ -117,17 +117,17 @@ todos_los_productos(ListaProductos),
     cantidades_de_aceptacion(ListaProductos, Pares),
     max_aceptacion(Pares,Producto,_).   
 
-                %imprimir producto mas aceptado         IMPORTANTE
+                %imprime producto mas aceptado         IMPORTANTE
 producto_mas_aceptado:-
      producto_mas_aceptado(P),
      write("el producto mas aceptado es: "), write(P), nl.   
 
-                %devuelve el producto con menos aceptacion
+
+                %devuelve y compara el producto menos aceptado
 min_aceptacion([(P, C)], P, C).                
 min_aceptacion([(P1,C1) | Resto], MinP, MinC):-
     min_aceptacion(Resto, P2, C2),
     (C1 =< C2 -> MinP = P1, MinC = C1 ; MinP = P2, MinC = C2).
-
 
 
                 %producto menos aceptado
@@ -136,13 +136,13 @@ producto_menos_aceptado_funcion(Producto):-
     cantidades_de_aceptacion(ListaProductos,Pares), 
     min_aceptacion(Pares,Producto,_).
 
-                   %imprimir producto menos aceptado         IMPORTANTE
+                %imprimir producto menos aceptado         IMPORTANTE
 producto_menos_aceptado:-
      producto_menos_aceptado_funcion(P),
      write("el producto menos aceptado es: "), write(P), nl.      
 
 
-                %cantidad de encuestados
+                  %cantidad de encuestados
 cantidad_personas_encuestadas(Cant):-
     findall(ID, encuesta(ID, _, _, _, _), Lista), 
     sort(Lista, SinRepetidos), 
@@ -152,3 +152,28 @@ cantidad_personas_encuestadas(Cant):-
 personas_encuestadas:-
     cantidad_personas_encuestadas(Cant),
     write("cantidad de personas encuestadas:"), write(Cant),nl.
+
+
+                    %cantidad de encuestas con aceptacion general
+
+cantidad_de_encuestas_con_aceptacion(Cantidad):-
+    findall(encuesta,encuesta(_,_,si,_,_), Lista),
+    length(Lista,Cantidad).                    
+
+                    %imprimir encuestas de aceptacion           IMPORTANTE
+
+encuestas_aceptacion_general:-
+       cantidad_de_encuestas_con_aceptacion(Cantidad),
+       write("cantidad general de encuestas con aceptacion: "),write(Cantidad), nl.        
+
+                    %cantidad de encuestas con aceptacion negativa general
+cantidad_de_encuestas_con_aceptacion_negativa(Cantidad):-
+    findall(encuesta,encuesta(_,_,no,_,_), Lista),
+    length(Lista,Cantidad).        
+
+
+                    %imprimir encuestas de aceptacion negativas           IMPORTANTE
+
+encuestas_sin_aceptacion_general:-
+       cantidad_de_encuestas_con_aceptacion_negativa(Cantidad),
+       write("cantidad general de encuestas con aceptacion negativa: "),write(Cantidad), nl.                  
