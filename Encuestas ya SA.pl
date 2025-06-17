@@ -177,3 +177,125 @@ cantidad_de_encuestas_con_aceptacion_negativa(Cantidad):-
 encuestas_sin_aceptacion_general:-
        cantidad_de_encuestas_con_aceptacion_negativa(Cantidad),
        write("cantidad general de encuestas con aceptacion negativa: "),write(Cantidad), nl.                  
+
+
+
+%-----------------RAMA--------------------------
+% 3)Distintos tipos de listados (por ejemplo: listado de productos, encuestas por producto, etc.)
+
+%Listado de productos
+listar_productos :-
+    producto(P),
+    writeln(P),
+    fail.
+listar_productos.
+
+%Encuestas por producto
+encuestas_por_producto(Producto) :-
+    producto(Producto),
+    writeln('---'),
+    format('Encuestas para ~w:~n', [Producto]),
+    encuesta(ID, Producto, Acepta, Motivo, Precio),
+    format('Persona ~w - Acepta: ~w - Motivo: ~w - Precio: ~w~n', [ID, Acepta, Motivo, Precio]),
+    fail.
+encuestas_por_producto(_).
+
+% Encuestas realizadas por una persona
+encuestas_de_persona(IDPersona) :-
+    persona(IDPersona, Edad, Genero),
+    format('Encuestas de Persona ~w (Edad: ~w, Género: ~w):~n', [IDPersona, Edad, Genero]),
+    encuesta(IDPersona, Producto, Acepta, Motivo, Precio),
+    format('Producto: ~w - Acepta: ~w - Motivo: ~w - Precio: $~w~n', [Producto, Acepta, Motivo, Precio]),
+    fail.
+encuestas_de_persona(_).
+
+%Listado general de todas las encuestas
+listar_todas_las_encuestas :-
+    writeln('Listado completo de encuestas:'),
+    encuesta(ID, Producto, Acepta, Motivo, Precio),
+    format('Persona: ~w - Producto: ~w - Acepta: ~w - Motivo: ~w - Precio: $~w~n',
+           [ID, Producto, Acepta, Motivo, Precio]),
+    fail.
+listar_todas_las_encuestas.
+
+%Listado de personas encuestadas
+%Mostrar todas las personas que participaron en las encuestas
+listar_personas :-
+    writeln('Listado de personas encuestadas:'),
+    persona(ID, Edad, Genero),
+    format('ID: ~w - Edad: ~w - Género: ~w~n', [ID, Edad, Genero]),
+    fail.
+listar_personas.
+
+%------------------------------ PUNTO 9 -------------------------------------------------
+% Razón principal de aceptación (la más mencionada) de cada producto.
+
+% Obtener la razón de aceptación más mencionada para un producto dado
+razon_principal_aceptacion(Producto, MotivoPrincipal) :-
+    findall(Motivo, encuesta(_, Producto, si, Motivo, _), Motivos),
+    motivo_mas_frecuente(Motivos, MotivoPrincipal).
+
+% Contar ocurrencias de cada motivo y devolver el más frecuente
+motivo_mas_frecuente(Lista, Motivo) :-
+    sort(Lista, Unicos),
+    contar_motivos(Lista, Unicos, Pares),
+    maximo_motivo(Pares, Motivo).
+
+% Contar cuántas veces aparece cada motivo
+contar_motivos(_, [], []).
+contar_motivos(Lista, [H|T], [(H, C)|Resto]) :-
+    incluir(H, Lista, C),
+    contar_motivos(Lista, T, Resto).
+
+% Contar cuántas veces un elemento aparece en una lista
+incluir(_, [], 0).
+incluir(X, [X|T], N) :- incluir(X, T, N1), N is N1 + 1.
+incluir(X, [Y|T], N) :- X \= Y, incluir(X, T, N).
+
+% Obtener el motivo con mayor cantidad
+maximo_motivo([(Motivo, Cant)|T], MaxMotivo) :-
+    maximo_motivo_aux(T, (Motivo, Cant), MaxMotivo).
+
+maximo_motivo_aux([], (Motivo, _), Motivo).
+maximo_motivo_aux([(M,C)|T], (_, CMax), Resultado) :-
+    C > CMax,
+    maximo_motivo_aux(T, (M, C), Resultado).
+maximo_motivo_aux([(_,C)|T], (MMax, CMax), Resultado) :-
+    C =< CMax,
+    maximo_motivo_aux(T, (MMax, CMax), Resultado).
+
+% CONSULTAS
+% razon_principal_aceptacion(ps5, Motivo).
+% producto(P), razon_principal_aceptacion(P, Motivo), format('Producto: ~w - Motivo principal de aceptación: ~w~n', [P, Motivo]), fail.
+
+%------------------------------ PUNTO 10 -------------------------------------------------
+% Razón principal de no aceptación (la más mencionada) de cada producto.
+
+% Obtener la razón de no aceptación más mencionada para un producto dado
+razon_principal_no_aceptacion(Producto, MotivoPrincipal) :-
+    findall(Motivo, encuesta(_, Producto, no, Motivo, _), Motivos),
+    motivo_mas_frecuente(Motivos, MotivoPrincipal).
+	
+% CONSULTAS
+% razon_principal_no_aceptacion(ps5, Motivo).
+% producto(P), razon_principal_no_aceptacion(P, Motivo), format('Producto: ~w - Motivo principal de no aceptación: ~w~n', [P, Motivo]), fail.
+
+%------------------------------ PUNTO 11 -------------------------------------------------
+% ¿Cuánto estarían dispuestos a pagar los encuestados que aceptan cada producto?
+
+% Calcular el promedio de precios para un producto aceptado
+promedio_precio_aceptacion(Producto, Promedio) :-
+    findall(Precio, encuesta(_, Producto, si, _, Precio), Precios),
+    calcular_promedio(Precios, Promedio).
+
+% Sumar y promediar
+calcular_promedio(Lista, Promedio) :-
+    sum_list(Lista, Suma),
+    length(Lista, Cant),
+    Cant > 0,
+    Promedio is Suma / Cant.
+
+% CONSULTAS
+% promedio_precio_aceptacion(ps5, Promedio).
+% producto(P), promedio_precio_aceptacion(P, Prom), format('Producto: ~w - Promedio de precio aceptado: $~2f~n', [P, Prom]), fail.
+
