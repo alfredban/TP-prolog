@@ -1,13 +1,17 @@
-% productos 
+% -----------------------------------------PRODUCTOS-------------------------------------
+%
+
 producto(ps5).
-producto(telefono_a_disco).  
+producto(telefono_a_disco).
 producto(iphone_13).
 producto(radio).
 producto(destornillador).
 
+% -----------------------------------------PERSONAS-------------------------------------
+
 % personas(ID, edad, genero)
 persona(1,20-30,masculino).
-persona(2,20-30,masculino).   
+persona(2,20-30,masculino).
 persona(3,50-60,masculino).
 persona(4,20-30,masculino).
 persona(5,50-60,masculino).
@@ -15,11 +19,13 @@ persona(6,20-30,femenino).
 persona(7,30-40,femenino).
 persona(8,40-50,femenino).
 persona(9,20-30,femenino).
-persona(10,30-40,femenino).    
+persona(10,30-40,femenino).
 persona(11,40-50,femenino).
-persona(12,50-60,masculino). 
+persona(12,50-60,masculino).
 persona(13,10-20,femenino).
 persona(14,10-20,femenino).
+
+% -----------------------------------------ENCUESTAS-------------------------------------
 
 % encuesta(IDPersona, Producto, Aceptacion, Motivo, Precio)
 
@@ -110,9 +116,9 @@ encuesta(12,destornillador,si,util,3700).
 % p13 femenino
 encuesta(13,ps5,no,complicado,0).
 encuesta(13,telefono_a_disco,no,viejo,0).
-encuesta(14,iphone_13,si,camara,840000).
+encuesta(13,iphone_13,si,camara,840000).
 encuesta(13,radio,no,aburrido,0).
-encuesta(14,destornillador,no,aburrido,0).
+encuesta(13,destornillador,no,aburrido,0).
 
 % p14 femenino
 encuesta(14,ps5,si,graficos,700000).
@@ -121,9 +127,14 @@ encuesta(14,iphone_13,si,camara,800000).
 encuesta(14,radio,no,aburrido,0).
 encuesta(14,destornillador,no,aburrido,0).
 
+% -----------------------------------------CONSULTAS--------------------------------------
+
+
+% ----------------------------------PUNTO 1--------------------------------
+% Producto con mas aceptacion.
 
                 %consultas
-                %cuantas veces un producto fue aceptado    
+                %cuantas veces un producto fue aceptado
 cuenta_cantidad_de_aceptacion(Producto, Cantidad):-
     findall(Producto, encuesta(_,Producto,si,_,_), Lista),
      length(Lista,Cantidad).
@@ -139,25 +150,29 @@ cantidades_de_aceptacion([P|Ps], [(P,Cant)|Resto]):-  %p es el producto, ps la l
     cantidades_de_aceptacion(Ps,Resto).   %llama de froma recursiva
 
                 %devuelve y compara el producto mas aceptado
-max_aceptacion([(P, C)], P, C).                           
+max_aceptacion([(P, C)], P, C).
 max_aceptacion([(P1, C1)|Resto], MaxP, MaxC) :-
     max_aceptacion(Resto, P2, C2),
-    (C1 >= C2 -> MaxP = P1, MaxC = C1 ; MaxP = P2, MaxC = C2).   
+    (C1 >= C2 -> MaxP = P1, MaxC = C1 ; MaxP = P2, MaxC = C2).
 
                 %producto mas aceptado
 producto_mas_aceptado_funcion(Producto):-
 todos_los_productos(ListaProductos),
     cantidades_de_aceptacion(ListaProductos, Pares),
-    max_aceptacion(Pares,Producto,_).   
+    max_aceptacion(Pares,Producto,_).
 
                 %imprime producto mas aceptado         IMPORTANTE
 producto_mas_aceptado:-
      producto_mas_aceptado(P),
-     write("el producto mas aceptado es: "), write(P), nl.   
+     write("el producto mas aceptado es: "), write(P), nl.
+
+
+% ----------------------------------PUNTO 2--------------------------------
+% Producto con menos aceptacion.
 
 
                 %devuelve y compara el producto menos aceptado
-min_aceptacion([(P, C)], P, C).                
+min_aceptacion([(P, C)], P, C).
 min_aceptacion([(P1,C1) | Resto], MinP, MinC):-
     min_aceptacion(Resto, P2, C2),
     (C1 =< C2 -> MinP = P1, MinC = C1 ; MinP = P2, MinC = C2).
@@ -166,51 +181,89 @@ min_aceptacion([(P1,C1) | Resto], MinP, MinC):-
                 %producto menos aceptado
 producto_menos_aceptado_funcion(Producto):-
     todos_los_productos(ListaProductos),
-    cantidades_de_aceptacion(ListaProductos,Pares), 
+    cantidades_de_aceptacion(ListaProductos,Pares),
     min_aceptacion(Pares,Producto,_).
 
                 %imprimir producto menos aceptado         IMPORTANTE
 producto_menos_aceptado:-
      producto_menos_aceptado_funcion(P),
-     write("el producto menos aceptado es: "), write(P), nl.      
+     write("el producto menos aceptado es: "), write(P), nl.
 
 
-                  %cantidad de encuestados
-cantidad_personas_encuestadas(Cant):-
-    findall(ID, encuesta(ID, _, _, _, _), Lista), 
-    sort(Lista, SinRepetidos), 
-    length(SinRepetidos, Cant).
+% CONSULTAS
+% producto_menos_aceptado.
 
-                    %mostrar cantidad de encuestados        IMPORTANTE
-personas_encuestadas:-
-    cantidad_personas_encuestadas(Cant),
-    write("cantidad de personas encuestadas:"), write(Cant),nl.
+% ----------------------------------PUNTO 3--------------------------------
+% Distintos tipos de listados (por ejemplo: listado de productos, encuestas por producto, etc.)
 
+% --------------PUNTO 3.1-------------
+%Listado de productos
 
-                    %cantidad de encuestas con aceptacion general
+listar_productos :-
+    producto(P),
+    writeln(P),
+    fail.
 
-cantidad_de_encuestas_con_aceptacion(Cantidad):-
-    findall(encuesta,encuesta(_,_,si,_,_), Lista),
-    length(Lista,Cantidad).                    
+% CONSULTAS
+% listar_productos.
 
-                    %imprimir encuestas de aceptacion           IMPORTANTE
+% --------------PUNTO 3.2-------------
+%Encuestas por producto
 
-encuestas_aceptacion_general:-
-       cantidad_de_encuestas_con_aceptacion(Cantidad),
-       write("cantidad general de encuestas con aceptacion: "),write(Cantidad), nl.        
+encuestas_por_producto(Producto) :-
+    producto(Producto),
+    writeln('---'),
+    format('Encuestas para ~w:~n', [Producto]),
+    encuesta(ID, Producto, Acepta, Motivo, Precio),
+    format('Persona ~w - Acepta: ~w - Motivo: ~w - Precio: ~w~n', [ID, Acepta, Motivo, Precio]),
+    fail.
 
-                    %cantidad de encuestas con aceptacion negativa general
-cantidad_de_encuestas_con_aceptacion_negativa(Cantidad):-
-    findall(encuesta,encuesta(_,_,no,_,_), Lista),
-    length(Lista,Cantidad).        
+% CONSULTAS
+% encuestas_por_producto(_).
+% encuestas_por_producto(ps5).
+% encuestas_por_producto(iphone_13).
 
+% --------------PUNTO 3.3-------------
+% Encuestas realizadas por una persona
 
-                    %imprimir encuestas de aceptacion negativas           IMPORTANTE
+encuestas_de_persona(IDPersona) :-
+    persona(IDPersona, Edad, Genero),
+    format('Encuestas de Persona ~w (Edad: ~w, Género: ~w):~n', [IDPersona, Edad, Genero]),
+    encuesta(IDPersona, Producto, Acepta, Motivo, Precio),
+    format('Producto: ~w - Acepta: ~w - Motivo: ~w - Precio: $~w~n', [Producto, Acepta, Motivo, Precio]),
+    fail.
 
-encuestas_sin_aceptacion_general:-
-       cantidad_de_encuestas_con_aceptacion_negativa(Cantidad),
-       write("cantidad general de encuestas con aceptacion negativa: "),write(Cantidad), nl.                  
+% CONSULTAS
+% encuestas_de_persona(_).
+% encuestas_de_persona(3).
+% encuestas_de_persona(6).
 
+% --------------PUNTO 3.4-------------
+%Listado general de todas las encuestas
+
+listar_todas_las_encuestas :-
+    writeln('Listado completo de encuestas:'),
+    encuesta(ID, Producto, Acepta, Motivo, Precio),
+    format('Persona: ~w - Producto: ~w - Acepta: ~w - Motivo: ~w - Precio: $~w~n',
+           [ID, Producto, Acepta, Motivo, Precio]),
+    fail.
+listar_todas_las_encuestas.
+
+% --------------PUNTO 3.5-------------
+%Listado de personas encuestadas
+
+%Mostrar todas las personas que participaron en las encuestas
+listar_personas :-
+    writeln('Listado de personas encuestadas:'),
+    persona(ID, Edad, Genero),
+    format('ID: ~w - Edad: ~w - Género: ~w~n', [ID, Edad, Genero]),
+    fail.
+
+% CONSULTAS
+% listar_personas.
+
+% ----------------------------------PUNTO 4--------------------------------
+%Cual es el rango de edad y genero que mas acepta cada producto?
 
                    %criterios de aceptacion para rango de edad, genero y aceptacion
 criterios_de_aceptacion_positivo_genero(Producto, Rango ,Genero):-
@@ -219,9 +272,8 @@ criterios_de_aceptacion_positivo_genero(Producto, Rango ,Genero):-
 
                     %cuenta de criterios de aceptacion para rango de edad, genero y aceptacion
 cuenta_aceptacion_positivos_genero(Producto, Rango, Genero, Cant):-
-    findall(1,criterios_de_aceptacion_positivo_genero(Producto, Rango, Genero), Lista), 
+    findall(1,criterios_de_aceptacion_positivo_genero(Producto, Rango, Genero), Lista),
     length(Lista,Cant).
-
 
                             %busqueda principal aceptacion
 encontrar_mejor_grupo_aceptacion_genero(Producto, MejorRango, MejorGenero, MaxCant):-
@@ -234,7 +286,7 @@ encontrar_mejor_grupo_aceptacion_genero(Producto, MejorRango, MejorGenero, MaxCa
 
 
                             %imprimir productos mas aceptados por genero, edad y aceptacion   IMPORTANTE
-mostrar_mejores_grupos_aceptacion_genero:- 
+mostrar_mejores_grupos_aceptacion_genero:-
     todos_los_productos(Productos),
     forall(member(P, Productos),
         (
@@ -242,16 +294,22 @@ mostrar_mejores_grupos_aceptacion_genero:-
             format("Producto: ~w - Grupo con mas aceptaciones: Edad ~w, Genero ~w, Cantidad: ~w~n", [P, Rango, Genero, Cant])
         )).
 
+%CONSULTAS
+% mostrar_mejores_grupos_aceptacion_genero.
+
+% ----------------------------------PUNTO 5--------------------------------
+%Cual es el rango de edad y genero que menos acepta cada producto?
+
 
                     %criterios de no aceptacion para rango de edad, genero y aceptacion
 criterios_de_aceptacion_negativo_genero(Producto, Rango ,Genero):-
     encuesta(ID,Producto,no,_,_),
-    persona(ID,Rango,Genero).        
+    persona(ID,Rango,Genero).
 
                     %cuenta de criterios de no aceptacion para rango de edad, genero y aceptacion
 cuenta_aceptacion_negativos_genero(Producto, Rango, Genero, Cant):-
-    findall(1,criterios_de_aceptacion_negativo_genero(Producto, Rango, Genero), Lista), 
-    length(Lista,Cant).    
+    findall(1,criterios_de_aceptacion_negativo_genero(Producto, Rango, Genero), Lista),
+    length(Lista,Cant).
 
 
                            %busqueda principal negativa
@@ -264,7 +322,7 @@ encontrar_mejor_grupo_no_aceptacion_genero(Producto, MejorRango, MejorGenero, Ma
     max_member((MaxCant, MejorRango, MejorGenero), Conteos).
 
                             %imprimir productos menos aceptados por genero, edad y aceptacion   IMPORTANTE
-mostrar_mejores_grupos_no_aceptacion_genero:- 
+mostrar_mejores_grupos_no_aceptacion_genero:-
     todos_los_productos(Productos),
     forall(member(P, Productos),
         (
@@ -272,76 +330,83 @@ mostrar_mejores_grupos_no_aceptacion_genero:-
             format("Producto: ~w - Grupo con menos aceptaciones: Edad ~w, Genero ~w, Cantidad: ~w~n", [P, Rango, Genero, Cant])
         )).
 
+%CONSULTAS
+% mostrar_mejores_grupos_no_aceptacion_genero.
+
+% ----------------------------------PUNTO 6--------------------------------
+%Cantidad de encuestados.
+
+                  %cantidad de encuestados
+cantidad_personas_encuestadas(Cant):-
+    findall(ID, encuesta(ID, _, _, _, _), Lista),
+    sort(Lista, SinRepetidos),
+    length(SinRepetidos, Cant).
+
+                    %mostrar cantidad de encuestados        IMPORTANTE
+personas_encuestadas:-
+    cantidad_personas_encuestadas(Cant),
+    write("cantidad de personas encuestadas:"), write(Cant),nl.
+
+% CONSULTAS
+% personas_encuestadas.
+
+% ----------------------------------PUNTO 7--------------------------------
+%Cantidad de encuestas de aceptacion, en general.
+
+                    %cantidad de encuestas con aceptacion general
+
+cantidad_de_encuestas_con_aceptacion(Cantidad):-
+    findall(encuesta,encuesta(_,_,si,_,_), Lista),
+    length(Lista,Cantidad).
+
+                    %imprimir encuestas de aceptacion           IMPORTANTE
+
+encuestas_aceptacion_general:-
+       cantidad_de_encuestas_con_aceptacion(Cantidad),
+       write("cantidad general de encuestas con aceptacion: "),write(Cantidad), nl.
+
+% CONSULTAS
+% encuestas_aceptacion_general.
+
+% ----------------------------------PUNTO 8--------------------------------
+% Cantidad de encuestas de no aceptacion, en general.
+
+                    %cantidad de encuestas con aceptacion negativa general
+cantidad_de_encuestas_con_aceptacion_negativa(Cantidad):-
+    findall(encuesta,encuesta(_,_,no,_,_), Lista),
+    length(Lista,Cantidad).
 
 
-%-----------------RAMA--------------------------
-% 3)Distintos tipos de listados (por ejemplo: listado de productos, encuestas por producto, etc.)
+                    %imprimir encuestas de aceptacion negativas           IMPORTANTE
 
-%Listado de productos
-listar_productos :-
-    producto(P),
-    writeln(P),
-    fail.
-listar_productos.
+encuestas_sin_aceptacion_general:-
+       cantidad_de_encuestas_con_aceptacion_negativa(Cantidad),
+       write("cantidad general de encuestas con aceptacion negativa: "),write(Cantidad), nl.
 
-%Encuestas por producto
-encuestas_por_producto(Producto) :-
-    producto(Producto),
-    writeln('---'),
-    format('Encuestas para ~w:~n', [Producto]),
-    encuesta(ID, Producto, Acepta, Motivo, Precio),
-    format('Persona ~w - Acepta: ~w - Motivo: ~w - Precio: ~w~n', [ID, Acepta, Motivo, Precio]),
-    fail.
-encuestas_por_producto(_).
+% CONSULTAS
+% encuestas_sin_aceptacion_general
 
-% Encuestas realizadas por una persona
-encuestas_de_persona(IDPersona) :-
-    persona(IDPersona, Edad, Genero),
-    format('Encuestas de Persona ~w (Edad: ~w, Género: ~w):~n', [IDPersona, Edad, Genero]),
-    encuesta(IDPersona, Producto, Acepta, Motivo, Precio),
-    format('Producto: ~w - Acepta: ~w - Motivo: ~w - Precio: $~w~n', [Producto, Acepta, Motivo, Precio]),
-    fail.
-encuestas_de_persona(_).
+% ----------------------------------PUNTO 9--------------------------------
+% Razon principal de aceptacion (la mas mencionada) de cada producto.
 
-%Listado general de todas las encuestas
-listar_todas_las_encuestas :-
-    writeln('Listado completo de encuestas:'),
-    encuesta(ID, Producto, Acepta, Motivo, Precio),
-    format('Persona: ~w - Producto: ~w - Acepta: ~w - Motivo: ~w - Precio: $~w~n',
-           [ID, Producto, Acepta, Motivo, Precio]),
-    fail.
-listar_todas_las_encuestas.
-
-%Listado de personas encuestadas
-%Mostrar todas las personas que participaron en las encuestas
-listar_personas :-
-    writeln('Listado de personas encuestadas:'),
-    persona(ID, Edad, Genero),
-    format('ID: ~w - Edad: ~w - Género: ~w~n', [ID, Edad, Genero]),
-    fail.
-listar_personas.
-
-%------------------------------ PUNTO 9 -------------------------------------------------
-% Razón principal de aceptación (la más mencionada) de cada producto.
-
-% Obtener la razón de aceptación más mencionada para un producto dado
+% Obtener la razon de aceptacion mas mencionada para un producto dado
 razon_principal_aceptacion(Producto, MotivoPrincipal) :-
     findall(Motivo, encuesta(_, Producto, si, Motivo, _), Motivos),
     motivo_mas_frecuente(Motivos, MotivoPrincipal).
 
-% Contar ocurrencias de cada motivo y devolver el más frecuente
+% Contar ocurrencias de cada motivo y devolver el mas frecuente
 motivo_mas_frecuente(Lista, Motivo) :-
     sort(Lista, Unicos),
     contar_motivos(Lista, Unicos, Pares),
     maximo_motivo(Pares, Motivo).
 
-% Contar cuántas veces aparece cada motivo
+% Contar cuantas veces aparece cada motivo
 contar_motivos(_, [], []).
 contar_motivos(Lista, [H|T], [(H, C)|Resto]) :-
     incluir(H, Lista, C),
     contar_motivos(Lista, T, Resto).
 
-% Contar cuántas veces un elemento aparece en una lista
+% Contar cuantas veces un elemento aparece en una lista
 incluir(_, [], 0).
 incluir(X, [X|T], N) :- incluir(X, T, N1), N is N1 + 1.
 incluir(X, [Y|T], N) :- X \= Y, incluir(X, T, N).
@@ -360,22 +425,22 @@ maximo_motivo_aux([(_,C)|T], (MMax, CMax), Resultado) :-
 
 % CONSULTAS
 % razon_principal_aceptacion(ps5, Motivo).
-% producto(P), razon_principal_aceptacion(P, Motivo), format('Producto: ~w - Motivo principal de aceptación: ~w~n', [P, Motivo]), fail.
+% producto(P), razon_principal_aceptacion(P, Motivo), format('Producto: ~w - Motivo principal de aceptacion: ~w~n', [P, Motivo]), fail.
 
-%------------------------------ PUNTO 10 -------------------------------------------------
-% Razón principal de no aceptación (la más mencionada) de cada producto.
+% ----------------------------------PUNTO 10--------------------------------
+% Razon principal de no aceptacion (la mas mencionada) de cada producto.
 
-% Obtener la razón de no aceptación más mencionada para un producto dado
+% Obtener la razon de no aceptacion mas mencionada para un producto dado
 razon_principal_no_aceptacion(Producto, MotivoPrincipal) :-
     findall(Motivo, encuesta(_, Producto, no, Motivo, _), Motivos),
     motivo_mas_frecuente(Motivos, MotivoPrincipal).
-	
+
 % CONSULTAS
 % razon_principal_no_aceptacion(ps5, Motivo).
-% producto(P), razon_principal_no_aceptacion(P, Motivo), format('Producto: ~w - Motivo principal de no aceptación: ~w~n', [P, Motivo]), fail.
+% producto(P), razon_principal_no_aceptacion(P, Motivo), format('Producto: ~w - Motivo principal de no aceptacion: ~w~n', [P, Motivo]), fail.
 
-%------------------------------ PUNTO 11 -------------------------------------------------
-% ¿Cuánto estarían dispuestos a pagar los encuestados que aceptan cada producto?
+% ----------------------------------PUNTO 11--------------------------------
+% Cuanto estaran dispuestos a pagar los encuestados que aceptan cada producto?
 
 % Calcular el promedio de precios para un producto aceptado
 promedio_precio_aceptacion(Producto, Promedio) :-
@@ -393,3 +458,48 @@ calcular_promedio(Lista, Promedio) :-
 % promedio_precio_aceptacion(ps5, Promedio).
 % producto(P), promedio_precio_aceptacion(P, Prom), format('Producto: ~w - Promedio de precio aceptado: $~2f~n', [P, Prom]), fail.
 
+% ----------------------------------PUNTO 12--------------------------------
+% Realizar todas las consultas extras que usted interprete que sea necesaria para cumplimentar el trabajo
+
+% --------------PUNTO 12.1-------------
+producto_aceptado_por_todos(P) :-
+    producto(P),
+    forall(persona(ID, _, _), encuesta(ID, P, si, _, _)).
+
+%CONSULTAS
+% producto_aceptado_por_todos(P).
+
+% --------------PUNTO 12.2-------------
+producto_con_mas_de_n_aceptaciones(P, N) :-
+    producto(P),  % Aseguramos que P sea un producto definido
+    findall(ID, encuesta(ID, P, si, _, _), Lista),
+    sort(Lista, Unicos),
+    length(Unicos, Cant),
+    Cant > N.
+
+imprimir_productos_con_mas_de_n_aceptaciones(N) :-
+    producto_con_mas_de_n_aceptaciones(P, N),
+    findall(ID, encuesta(ID, P, si, _, _), Lista),
+    sort(Lista, Unicos),
+    length(Unicos, Cant),
+    write('Producto: '), write(P),
+    write(' - Cantidad de aceptaciones: '), write(Cant), nl,
+    fail.
+
+
+%CONSULTAS
+%imprimir_productos_con_mas_de_n_aceptaciones(5).
+
+% --------------PUNTO 12.3-------------
+productos_aceptados_por_mayoria(Lista) :-
+    findall(P, (
+        producto(P),
+        findall(ID, encuesta(ID, P, si, _, _), Aceptan),
+        length(Aceptan, Cant),
+        findall(IDP, persona(IDP, _, _), Personas),
+        length(Personas, Total),
+        Cant > Total // 2
+    ), Lista).
+
+%CONSULTAS
+%productos_aceptados_por_mayoria(Lista). 
