@@ -6,88 +6,121 @@ producto(radio).
 producto(destornillador).
 
 % personas(ID, edad, genero)
-persona(1,20,masculino).
-persona(2,35,masculino).   
-persona(3,60,masculino).
-persona(4,25,masculino).
-persona(5,70,masculino).
-persona(6,25,femenino).
-persona(7,40,femenino).
-persona(8,57,femenino).
-persona(9,17,femenino).
-persona(10,34,femenino).      
+persona(1,20-30,masculino).
+persona(2,20-30,masculino).   
+persona(3,50-60,masculino).
+persona(4,20-30,masculino).
+persona(5,50-60,masculino).
+persona(6,20-30,femenino).
+persona(7,30-40,femenino).
+persona(8,40-50,femenino).
+persona(9,20-30,femenino).
+persona(10,30-40,femenino).    
+persona(11,40-50,femenino).
+persona(12,50-60,masculino). 
+persona(13,10-20,femenino).
+persona(14,10-20,femenino).
 
 % encuesta(IDPersona, Producto, Aceptacion, Motivo, Precio)
 
-% p1 (20 años, masculino)
+% p1 masculino
 encuesta(1,ps5,si,graficos,1000000).
 encuesta(1,telefono_a_disco,no,anticuado,0).
 encuesta(1,iphone_13,si,fluidez,700000).
 encuesta(1,radio,no,inutil,3000).
 encuesta(1,destornillador,si,util,5000).
 
-% p2 (35 años, masculino)
+% p2 masculino
 encuesta(2,ps5,si,entretenimiento,800000).
 encuesta(2,telefono_a_disco,no,incomodo,0).
 encuesta(2,iphone_13,si,camara,600000).
 encuesta(2,radio,si,costumbre,2000).
 encuesta(2,destornillador,si,util,6000).
 
-% p3 (60 años, masculino)
+% p3 masculino
 encuesta(3,ps5,no,complejo,0).
 encuesta(3,telefono_a_disco,si,costumbre,1000).
 encuesta(3,iphone_13,no,caro,0).
 encuesta(3,radio,si,facil_uso,3000).
 encuesta(3,destornillador,si,util,5000).
 
-% p4 (25 años, masculino)
-encuesta(4,ps5,si,juegos,950000).
+% p4 masculino
+encuesta(4,ps5,no,caro,0).
 encuesta(4,telefono_a_disco,no,lento,0).
 encuesta(4,iphone_13,si,camara,720000).
 encuesta(4,radio,no,anticuado,1000).
 encuesta(4,destornillador,si,durabilidad,6000).
 
-% p5 (70 años, masculino)
+% p5 masculino
 encuesta(5,ps5,no,complejo,0).
 encuesta(5,telefono_a_disco,si,conocido,2000).
 encuesta(5,iphone_13,no,innecesario,0).
 encuesta(5,radio,si,costumbre,2000).
 encuesta(5,destornillador,si,util,4500).
 
-% p6 (25 años, femenino)
+% p6 femenino
 encuesta(6,ps5,si,diversion,1000000).
 encuesta(6,telefono_a_disco,no,viejo,0).
 encuesta(6,iphone_13,si,estilo,700000).
 encuesta(6,radio,no,anticuado,0).
 encuesta(6,destornillador,si,practico,7000).
 
-% p7 (40 años, femenino)
+% p7 femenino
 encuesta(7,ps5,si,juegos,850000).
 encuesta(7,telefono_a_disco,no,desactualizado,0).
 encuesta(7,iphone_13,si,fluidez,680000).
 encuesta(7,radio,si,nostalgia,2000).
 encuesta(7,destornillador,si,util,5000).
 
-% p8 (57 años, femenino)
+% p8 femenino
 encuesta(8,ps5,no,complicado,0).
 encuesta(8,telefono_a_disco,si,facil_uso,1500).
 encuesta(8,iphone_13,no,caro,0).
 encuesta(8,radio,si,costumbre,2500).
 encuesta(8,destornillador,si,util,4000).
 
-% p9 (17 años, femenino)
+% p9  femenino
 encuesta(9,ps5,si,graficos,950000).
 encuesta(9,telefono_a_disco,no,viejo,0).
 encuesta(9,iphone_13,si,estilo,750000).
 encuesta(9,radio,no,aburrido,0).
 encuesta(9,destornillador,si,practico,6000).
 
-% p10 (34 años, femenino)
+% p10 femenino
 encuesta(10,ps5,si,entretenimiento,870000).
 encuesta(10,telefono_a_disco,no,obsoleto,0).
 encuesta(10,iphone_13,si,camara,690000).
 encuesta(10,radio,si,informacion,1500).
 encuesta(10,destornillador,si,util,5500).
+
+% p11 femenino
+encuesta(11,ps5,no,complicado,0).
+encuesta(11,telefono_a_disco,no,obsoleto,0).
+encuesta(11,iphone_13,si,camara,790000).
+encuesta(11,radio,no,aburrido,0).
+encuesta(11,destornillador,si,util,3500).
+
+% p12 masculino
+encuesta(12,ps5,no,complicado,0).
+encuesta(12,telefono_a_disco,si,facil_uso,2000).
+encuesta(12,iphone_13,no,caro,0).
+encuesta(12,radio,si,informacion,0).
+encuesta(12,destornillador,si,util,3700).
+
+% p13 femenino
+encuesta(13,ps5,no,complicado,0).
+encuesta(13,telefono_a_disco,no,viejo,0).
+encuesta(14,iphone_13,si,camara,840000).
+encuesta(13,radio,no,aburrido,0).
+encuesta(14,destornillador,no,aburrido,0).
+
+% p14 femenino
+encuesta(14,ps5,si,graficos,700000).
+encuesta(14,telefono_a_disco,si,facil_uso,2000).
+encuesta(14,iphone_13,si,camara,800000).
+encuesta(14,radio,no,aburrido,0).
+encuesta(14,destornillador,no,aburrido,0).
+
 
                 %consultas
                 %cuantas veces un producto fue aceptado    
@@ -177,6 +210,67 @@ cantidad_de_encuestas_con_aceptacion_negativa(Cantidad):-
 encuestas_sin_aceptacion_general:-
        cantidad_de_encuestas_con_aceptacion_negativa(Cantidad),
        write("cantidad general de encuestas con aceptacion negativa: "),write(Cantidad), nl.                  
+
+
+                   %criterios de aceptacion para rango de edad, genero y aceptacion
+criterios_de_aceptacion_positivo_genero(Producto, Rango ,Genero):-
+    encuesta(ID,Producto,si,_,_),
+    persona(ID,Rango,Genero).
+
+                    %cuenta de criterios de aceptacion para rango de edad, genero y aceptacion
+cuenta_aceptacion_positivos_genero(Producto, Rango, Genero, Cant):-
+    findall(1,criterios_de_aceptacion_positivo_genero(Producto, Rango, Genero), Lista), 
+    length(Lista,Cant).
+
+
+                            %busqueda principal aceptacion
+encontrar_mejor_grupo_aceptacion_genero(Producto, MejorRango, MejorGenero, MaxCant):-
+    findall((Rango, Genero), criterios_de_aceptacion_positivo_genero(Producto, Rango, Genero), Lista),
+    setof((R, G), member((R, G), Lista), CombinacionesUnicas),
+    findall((Cant, R, G),
+        (member((R, G), CombinacionesUnicas), cuenta_aceptacion_positivos_genero(Producto, R, G, Cant)),
+        Conteos),
+    max_member((MaxCant, MejorRango, MejorGenero), Conteos).
+
+
+                            %imprimir productos mas aceptados por genero, edad y aceptacion   IMPORTANTE
+mostrar_mejores_grupos_aceptacion_genero:- 
+    todos_los_productos(Productos),
+    forall(member(P, Productos),
+        (
+            encontrar_mejor_grupo_aceptacion_genero(P, Rango, Genero, Cant),
+            format("Producto: ~w - Grupo con mas aceptaciones: Edad ~w, Genero ~w, Cantidad: ~w~n", [P, Rango, Genero, Cant])
+        )).
+
+
+                    %criterios de no aceptacion para rango de edad, genero y aceptacion
+criterios_de_aceptacion_negativo_genero(Producto, Rango ,Genero):-
+    encuesta(ID,Producto,no,_,_),
+    persona(ID,Rango,Genero).        
+
+                    %cuenta de criterios de no aceptacion para rango de edad, genero y aceptacion
+cuenta_aceptacion_negativos_genero(Producto, Rango, Genero, Cant):-
+    findall(1,criterios_de_aceptacion_negativo_genero(Producto, Rango, Genero), Lista), 
+    length(Lista,Cant).    
+
+
+                           %busqueda principal negativa
+encontrar_mejor_grupo_no_aceptacion_genero(Producto, MejorRango, MejorGenero, MaxCant):-
+    findall((Rango, Genero), criterios_de_aceptacion_negativo_genero(Producto, Rango, Genero), Lista),
+    setof((R, G), member((R, G), Lista), CombinacionesUnicas),
+    findall((Cant, R, G),
+        (member((R, G), CombinacionesUnicas), cuenta_aceptacion_negativos_genero(Producto, R, G, Cant)),
+        Conteos),
+    max_member((MaxCant, MejorRango, MejorGenero), Conteos).
+
+                            %imprimir productos menos aceptados por genero, edad y aceptacion   IMPORTANTE
+mostrar_mejores_grupos_no_aceptacion_genero:- 
+    todos_los_productos(Productos),
+    forall(member(P, Productos),
+        (
+            encontrar_mejor_grupo_no_aceptacion_genero(P, Rango, Genero, Cant),
+            format("Producto: ~w - Grupo con menos aceptaciones: Edad ~w, Genero ~w, Cantidad: ~w~n", [P, Rango, Genero, Cant])
+        )).
 
 
 
