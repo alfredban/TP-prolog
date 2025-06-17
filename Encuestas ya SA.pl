@@ -24,6 +24,13 @@ persona(11,40-50,femenino).
 persona(12,50-60,masculino).
 persona(13,10-20,femenino).
 persona(14,10-20,femenino).
+persona(15,30-40,masculino).
+persona(16,50-60,femenino).
+persona(17,40-50,masculino).
+persona(18,30-40,femenino).
+persona(19,20-30,masculino).
+persona(20,10-20,femenino).
+persona(21,50-60,masculino).
 
 % -----------------------------------------ENCUESTAS-------------------------------------
 
@@ -127,6 +134,55 @@ encuesta(14,iphone_13,si,camara,800000).
 encuesta(14,radio,no,aburrido,0).
 encuesta(14,destornillador,no,aburrido,0).
 
+% p15 masculino (30-40)
+%encuesta(15,ps5,si,entretenimiento,870000).
+%encuesta(15,telefono_a_disco,no,obsoleto,0).
+%encuesta(15,iphone_13,si,camara,750000).
+%encuesta(15,radio,no,anticuado,0).
+%encuesta(15,destornillador,si,util,5500).
+
+% p16 femenino (50-60)
+%encuesta(16,ps5,no,complejo,0).
+%encuesta(16,telefono_a_disco,si,nostalgia,1000).
+%encuesta(16,iphone_13,no,caro,0).
+%encuesta(16,radio,si,costumbre,1500).
+%encuesta(16,destornillador,si,util,4000).
+
+% p17 masculino (40-50)
+%encuesta(17,ps5,si,juegos,900000).
+%encuesta(17,telefono_a_disco,no,incomodo,0).
+%encuesta(17,iphone_13,si,fluidez,680000).
+%encuesta(17,radio,si,informacion,1200).
+%encuesta(17,destornillador,si,util,5000).
+
+% p18 femenino (30-40)
+%encuesta(18,ps5,si,graficos,950000).
+%encuesta(18,telefono_a_disco,no,viejo,0).
+%encuesta(18,iphone_13,si,estilo,700000).
+%encuesta(18,radio,no,anticuado,0).
+%encuesta(18,destornillador,si,practico,6000).
+
+% p19 masculino (20-30)
+%encuesta(19,ps5,si,juegos,880000).
+%encuesta(19,telefono_a_disco,no,lento,0).
+%encuesta(19,iphone_13,si,camara,740000).
+%encuesta(19,radio,no,anticuado,0).
+%encuesta(19,destornillador,si,util,5800).
+
+% p20 femenino (10-20)
+%encuesta(20,ps5,si,graficos,720000).
+%encuesta(20,telefono_a_disco,no,viejo,0).
+%encuesta(20,iphone_13,si,fluidez,780000).
+%encuesta(20,radio,no,aburrido,0).
+%encuesta(20,destornillador,no,innecesario,0).
+
+% p21 masculino (50-60)
+% Encuesta p21
+%encuesta(21,ps5,no,complejo,0).
+%encuesta(21,telefono_a_disco,si,costumbre,1000).
+%encuesta(21,iphone_13,no,caro,0).
+%encuesta(21,radio,si,costumbre,1500).
+%encuesta(21,destornillador,si,util,4300).
 % -----------------------------------------CONSULTAS--------------------------------------
 
 
@@ -144,10 +200,10 @@ todos_los_productos(Productos):-
     findall(P,producto(P), Productos).
 
                 %retorna la aceptacion de cada producto
-cantidades_de_aceptacion([],[]). %si no hay nada en la lista termina aca
-cantidades_de_aceptacion([P|Ps], [(P,Cant)|Resto]):-  %p es el producto, ps la lista de productos p y cant es la lista con sus resultados, resto es la lista ya hecha
-    cuenta_cantidad_de_aceptacion(P,Cant), %devuelve el valor_del primer valor
-    cantidades_de_aceptacion(Ps,Resto).   %llama de froma recursiva
+cantidades_de_aceptacion([],[]).
+cantidades_de_aceptacion([P|Ps], [(P,Cant)|Resto]):-  
+    cuenta_cantidad_de_aceptacion(P,Cant), 
+    cantidades_de_aceptacion(Ps,Resto).   
 
                 %devuelve y compara el producto mas aceptado
 max_aceptacion([(P, C)], P, C).
@@ -161,9 +217,9 @@ todos_los_productos(ListaProductos),
     cantidades_de_aceptacion(ListaProductos, Pares),
     max_aceptacion(Pares,Producto,_).
 
-                %imprime producto mas aceptado         IMPORTANTE
+                %imprime producto mas aceptado         
 producto_mas_aceptado:-
-     producto_mas_aceptado(P),
+     producto_mas_aceptado_funcion(P),
      write("el producto mas aceptado es: "), write(P), nl.
 
 
@@ -184,7 +240,7 @@ producto_menos_aceptado_funcion(Producto):-
     cantidades_de_aceptacion(ListaProductos,Pares),
     min_aceptacion(Pares,Producto,_).
 
-                %imprimir producto menos aceptado         IMPORTANTE
+                %imprimir producto menos aceptado        
 producto_menos_aceptado:-
      producto_menos_aceptado_funcion(P),
      write("el producto menos aceptado es: "), write(P), nl.
@@ -285,7 +341,7 @@ encontrar_mejor_grupo_aceptacion_genero(Producto, MejorRango, MejorGenero, MaxCa
     max_member((MaxCant, MejorRango, MejorGenero), Conteos).
 
 
-                            %imprimir productos mas aceptados por genero, edad y aceptacion   IMPORTANTE
+                            %imprimir productos mas aceptados por genero, edad y aceptacion  
 mostrar_mejores_grupos_aceptacion_genero:-
     todos_los_productos(Productos),
     forall(member(P, Productos),
@@ -321,7 +377,7 @@ encontrar_mejor_grupo_no_aceptacion_genero(Producto, MejorRango, MejorGenero, Ma
         Conteos),
     max_member((MaxCant, MejorRango, MejorGenero), Conteos).
 
-                            %imprimir productos menos aceptados por genero, edad y aceptacion   IMPORTANTE
+                            %imprimir productos menos aceptados por genero, edad y aceptacion   
 mostrar_mejores_grupos_no_aceptacion_genero:-
     todos_los_productos(Productos),
     forall(member(P, Productos),
@@ -342,7 +398,7 @@ cantidad_personas_encuestadas(Cant):-
     sort(Lista, SinRepetidos),
     length(SinRepetidos, Cant).
 
-                    %mostrar cantidad de encuestados        IMPORTANTE
+                    %mostrar cantidad de encuestados       
 personas_encuestadas:-
     cantidad_personas_encuestadas(Cant),
     write("cantidad de personas encuestadas:"), write(Cant),nl.
@@ -359,7 +415,7 @@ cantidad_de_encuestas_con_aceptacion(Cantidad):-
     findall(encuesta,encuesta(_,_,si,_,_), Lista),
     length(Lista,Cantidad).
 
-                    %imprimir encuestas de aceptacion           IMPORTANTE
+                    %imprimir encuestas de aceptacion           
 
 encuestas_aceptacion_general:-
        cantidad_de_encuestas_con_aceptacion(Cantidad),
