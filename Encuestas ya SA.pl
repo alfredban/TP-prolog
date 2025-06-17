@@ -1,5 +1,4 @@
 % -----------------------------------------PRODUCTOS-------------------------------------
-%
 
 producto(ps5).
 producto(telefono_a_disco).
@@ -134,57 +133,58 @@ encuesta(14,iphone_13,si,camara,800000).
 encuesta(14,radio,no,aburrido,0).
 encuesta(14,destornillador,no,aburrido,0).
 
+/*
 % p15 masculino (30-40)
-%encuesta(15,ps5,si,entretenimiento,870000).
-%encuesta(15,telefono_a_disco,no,obsoleto,0).
-%encuesta(15,iphone_13,si,camara,750000).
-%encuesta(15,radio,no,anticuado,0).
-%encuesta(15,destornillador,si,util,5500).
+encuesta(15,ps5,si,entretenimiento,870000).
+encuesta(15,telefono_a_disco,no,obsoleto,0).
+encuesta(15,iphone_13,si,camara,750000).
+encuesta(15,radio,no,anticuado,0).
+encuesta(15,destornillador,si,util,5500).
 
 % p16 femenino (50-60)
-%encuesta(16,ps5,no,complejo,0).
-%encuesta(16,telefono_a_disco,si,nostalgia,1000).
-%encuesta(16,iphone_13,no,caro,0).
-%encuesta(16,radio,si,costumbre,1500).
-%encuesta(16,destornillador,si,util,4000).
+encuesta(16,ps5,no,complejo,0).
+encuesta(16,telefono_a_disco,si,nostalgia,1000).
+encuesta(16,iphone_13,no,caro,0).
+encuesta(16,radio,si,costumbre,1500).
+encuesta(16,destornillador,si,util,4000).
 
 % p17 masculino (40-50)
-%encuesta(17,ps5,si,juegos,900000).
-%encuesta(17,telefono_a_disco,no,incomodo,0).
-%encuesta(17,iphone_13,si,fluidez,680000).
-%encuesta(17,radio,si,informacion,1200).
-%encuesta(17,destornillador,si,util,5000).
+encuesta(17,ps5,si,juegos,900000).
+encuesta(17,telefono_a_disco,no,incomodo,0).
+encuesta(17,iphone_13,si,fluidez,680000).
+encuesta(17,radio,si,informacion,1200).
+encuesta(17,destornillador,si,util,5000).
 
 % p18 femenino (30-40)
-%encuesta(18,ps5,si,graficos,950000).
-%encuesta(18,telefono_a_disco,no,viejo,0).
-%encuesta(18,iphone_13,si,estilo,700000).
-%encuesta(18,radio,no,anticuado,0).
-%encuesta(18,destornillador,si,practico,6000).
+encuesta(18,ps5,si,graficos,950000).
+encuesta(18,telefono_a_disco,no,viejo,0).
+encuesta(18,iphone_13,si,estilo,700000).
+encuesta(18,radio,no,anticuado,0).
+encuesta(18,destornillador,si,practico,6000).
 
 % p19 masculino (20-30)
-%encuesta(19,ps5,si,juegos,880000).
-%encuesta(19,telefono_a_disco,no,lento,0).
-%encuesta(19,iphone_13,si,camara,740000).
-%encuesta(19,radio,no,anticuado,0).
-%encuesta(19,destornillador,si,util,5800).
+encuesta(19,ps5,si,juegos,880000).
+encuesta(19,telefono_a_disco,no,lento,0).
+encuesta(19,iphone_13,si,camara,740000).
+encuesta(19,radio,no,anticuado,0).
+encuesta(19,destornillador,si,util,5800).
 
 % p20 femenino (10-20)
-%encuesta(20,ps5,si,graficos,720000).
-%encuesta(20,telefono_a_disco,no,viejo,0).
-%encuesta(20,iphone_13,si,fluidez,780000).
-%encuesta(20,radio,no,aburrido,0).
-%encuesta(20,destornillador,no,innecesario,0).
+encuesta(20,ps5,si,graficos,720000).
+encuesta(20,telefono_a_disco,no,viejo,0).
+encuesta(20,iphone_13,si,fluidez,780000).
+encuesta(20,radio,no,aburrido,0).
+encuesta(20,destornillador,no,innecesario,0).
+
 
 % p21 masculino (50-60)
-% Encuesta p21
-%encuesta(21,ps5,no,complejo,0).
-%encuesta(21,telefono_a_disco,si,costumbre,1000).
-%encuesta(21,iphone_13,no,caro,0).
-%encuesta(21,radio,si,costumbre,1500).
-%encuesta(21,destornillador,si,util,4300).
+encuesta(21,ps5,no,complejo,0).
+encuesta(21,telefono_a_disco,si,costumbre,1000).
+encuesta(21,iphone_13,no,caro,0).
+encuesta(21,radio,si,costumbre,1500).
+encuesta(21,destornillador,si,util,4300).
+*/
 % -----------------------------------------CONSULTAS--------------------------------------
-
 
 % ----------------------------------PUNTO 1--------------------------------
 % Producto con mas aceptacion.
@@ -222,6 +222,8 @@ producto_mas_aceptado:-
      producto_mas_aceptado_funcion(P),
      write("el producto mas aceptado es: "), write(P), nl.
 
+% CONSULTAS
+% producto_mas_aceptado.
 
 % ----------------------------------PUNTO 2--------------------------------
 % Producto con menos aceptacion.
@@ -342,7 +344,7 @@ encontrar_mejor_grupo_aceptacion_genero(Producto, MejorRango, MejorGenero, MaxCa
 
 
                             %imprimir productos mas aceptados por genero, edad y aceptacion  
-mostrar_mejores_grupos_aceptacion_genero:-
+mostrar_mejores_grupos_aceptacion_genero_edad:-
     todos_los_productos(Productos),
     forall(member(P, Productos),
         (
@@ -351,7 +353,7 @@ mostrar_mejores_grupos_aceptacion_genero:-
         )).
 
 %CONSULTAS
-% mostrar_mejores_grupos_aceptacion_genero.
+% mostrar_mejores_grupos_aceptacion_genero_edad.
 
 % ----------------------------------PUNTO 5--------------------------------
 %Cual es el rango de edad y genero que menos acepta cada producto?
@@ -378,7 +380,7 @@ encontrar_mejor_grupo_no_aceptacion_genero(Producto, MejorRango, MejorGenero, Ma
     max_member((MaxCant, MejorRango, MejorGenero), Conteos).
 
                             %imprimir productos menos aceptados por genero, edad y aceptacion   
-mostrar_mejores_grupos_no_aceptacion_genero:-
+mostrar_mejores_grupos_no_aceptacion_genero_edad:-
     todos_los_productos(Productos),
     forall(member(P, Productos),
         (
@@ -387,7 +389,7 @@ mostrar_mejores_grupos_no_aceptacion_genero:-
         )).
 
 %CONSULTAS
-% mostrar_mejores_grupos_no_aceptacion_genero.
+% mostrar_mejores_grupos_no_aceptacion_genero_edad.
 
 % ----------------------------------PUNTO 6--------------------------------
 %Cantidad de encuestados.
